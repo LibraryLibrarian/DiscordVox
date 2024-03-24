@@ -1,4 +1,5 @@
 import discord
+from discord import app_commands
 import os
 from openai import OpenAI
 import requests
@@ -7,6 +8,7 @@ import requests
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
+tree = app_commands.CommandTree(client)
 
 # OpenAIのクライアントを初期化
 openai_client = OpenAI(
@@ -78,6 +80,11 @@ async def on_message(message):
 @client.event
 async def on_ready():
     print(f'ログインしました: {client.user.name}')
+    await tree.sync() # コマンド同期
+
+@tree.command(name="join",description="ボイスチャンネルへ接続")
+async def test_command(interaction: discord.Interaction):
+    await interaction.response.send_message("テスト",ephemeral=False)
 
 # 環境変数からトークンを取得
 TOKEN = os.environ.get('VOICEVOX_DISCORD_TOKEN')
