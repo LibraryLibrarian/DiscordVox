@@ -83,8 +83,14 @@ async def on_ready():
     await tree.sync() # コマンド同期
 
 @tree.command(name="join",description="ボイスチャンネルへ接続")
-async def test_command(interaction: discord.Interaction):
-    await interaction.response.send_message("テスト",ephemeral=False)
+async def join(interaction: discord.Interaction):
+    # メッセージ送信者がボイスチャンネルにいるか確認
+    if interaction.user.voice:
+        channel = interaction.user.voice.channel
+        await channel.connect()
+        await interaction.response.send_message(f"{channel.name}に接続しました。")
+    else:
+        await interaction.response.send_message("誰かはボイスチャンネルに接続してください。", ephemeral=False)
 
 # 環境変数からトークンを取得
 TOKEN = os.environ.get('VOICEVOX_DISCORD_TOKEN')
