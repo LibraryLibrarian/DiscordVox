@@ -50,8 +50,8 @@ async def on_message(message):
 async def on_ready():
     print(f'ログインしました: {client.user.name}')
 
-# ここにDiscordのトークンを入力
-TOKEN = 'MTIyMTAwOTIwNjg4MzI1ODM2OA.GSuJME.YtIxu3xj0hjoBBesbe6yASx_zXtrwSGYwXTFMs'
+# 環境変数からトークンを取得
+TOKEN = os.environ.get('VOICEVOX_DISCORD_TOKEN')
 
 # ボットを起動
 client.run(TOKEN)
